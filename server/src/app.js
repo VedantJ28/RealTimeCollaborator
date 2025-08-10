@@ -7,7 +7,7 @@ app.use(express.json());
 
 app.get('/health', (req, res) => res.json({ ok: true }));
 app.get('/', (req, res)=>{
-    res.send('Welcome to CodeColab!');
+    res.send("Hello");
 })
 
 export default app;
