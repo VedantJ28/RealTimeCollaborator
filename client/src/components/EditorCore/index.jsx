@@ -3,9 +3,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import useSocket from './useSocket';
 import CodeEditor from './Editor';
 import SidePanel from './SidePanel/SidePanel';
+import logo from '../../assets/logo.png';
 
 export default function EditorCore({ roomId, displayName, initialContent = '// Start coding...' }) {
-  const [options, setOptions] = useState({ language: 'javascript', theme: 'vs-dark', fontSize: 14, tabSize: 2 });
+  const [options, setOptions] = useState({
+    language: 'C++',
+    theme: 'vs-dark',
+    fontSize: 14,
+    tabSize: 2,
+    lineNumbers: 'on',     // added
+    wordWrap: 'off',       // added
+    minimap: true          // added
+  });
   const { socketRef, connectedUsers, chatMessages, roomState, emitChat, emitCodeChange, copyRoomId, leaveRoom } = useSocket(roomId, displayName);
   const [initialCode, setInitialCode] = useState(initialContent);
   const mountedRef = useRef(false);
@@ -40,16 +49,61 @@ export default function EditorCore({ roomId, displayName, initialContent = '// S
 
   if (!roomId) return <div className="p-4 text-red-500">Missing room id.</div>;
 
+  const initials = (displayName || '?')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(p => p[0].toUpperCase())
+    .join('') || '?';
+
+  const shortRoomId = roomId && roomId.length > 14
+    ? `${roomId.slice(0,6)}…${roomId.slice(-4)}`
+    : roomId;
+
   return (
     <div className="h-screen w-screen flex flex-col bg-gray-800 text-white">
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-900">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-indigo-500 rounded flex items-center justify-center font-bold">CE</div>
-          <div className="font-semibold">Collab Editor</div>
-          <div className="ml-4 text-sm text-gray-300">Room: {roomId}</div>
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-900 border-b border-gray-700">
+        <div className="flex items-center gap-5 min-w-0">
+          <a href="/" className="flex items-center gap-2 shrink-0">
+            <img
+                      src={logo}
+                      alt="CodeColab Logo"
+                      className="w-8 h-8 drop-shadow-lg"
+                      draggable="false"
+                    />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">CodeColab</span>
+          </a>
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-gray-400">Room</span>
+            <div className="flex items-center gap-1">
+              <code
+                title={roomId}
+                className="px-2 py-0.5 rounded bg-gray-800 border border-gray-600 font-mono text-xs sm:text-[13px]">
+                {shortRoomId}
+              </code>
+              {/* <button
+                onClick={handleCopyRoom}
+                className="px-2 py-0.5 text-xs rounded bg-gray-700 hover:bg-gray-600 border border-gray-600 transition"
+                title="Copy Room ID">
+                {copiedRoom ? 'Copied' : 'Copy'}
+              </button> */}
+            </div>
+          </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="text-sm text-gray-300">{displayName}</div>
+            <div className="flex items-center gap-2">
+              <div
+                className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center font-semibold text-sm select-none"
+                title={displayName}>
+                {initials}
+              </div>
+              <div className="leading-tight max-w-[140px] sm:max-w-xs truncate">
+                <span className="text-sm font-medium truncate" title={displayName}>
+                  {displayName}
+                </span>
+                <div className="text-[10px] uppercase tracking-wide text-gray-400 -mt-0.5">You</div>
+              </div>
+            </div>
         </div>
       </div>
 

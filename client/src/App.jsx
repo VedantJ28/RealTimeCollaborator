@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import EditorPage from "./pages/EditorPage";
-import { SocketProvider } from "./context/SocketProvider";
+// import { SocketProvider } from "./context/SocketProvider";
 
 const App = () => {
   return (

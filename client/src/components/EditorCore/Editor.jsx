@@ -8,7 +8,7 @@ export default function CodeEditor({ initialCode, language, options, onLocalChan
 
   // update when initialCode changes (first room state load)
   useEffect(() => {
-    setCode((prev) => (prev === '' || prev === '// Start coding...' ? initialCode : prev));
+    setCode((prev) => (prev === '' || prev != '// Start Coding...' ? initialCode : prev));
   }, [initialCode]);
 
   // listen for remote code-change events
@@ -48,8 +48,13 @@ export default function CodeEditor({ initialCode, language, options, onLocalChan
       options={{
         fontSize: options.fontSize,
         tabSize: options.tabSize,
-        minimap: { enabled: false },
+        lineNumbers: options.lineNumbers ?? 'on',
+        wordWrap: options.wordWrap ?? 'off',
+        minimap: { enabled: options.minimap !== false },
         automaticLayout: true,
+        // optional extras:
+        scrollBeyondLastLine: false,
+        smoothScrolling: true
       }}
     />
   );
