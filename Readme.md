@@ -2,8 +2,6 @@
 
 Real‑time collaborative code editing platform with multi-user chat, language synchronization, and ephemeral room lifecycle backed by Redis.
 
-> NOTE: Remove any real credentials (e.g. the committed Redis URL in `server/.env`) before publishing this repository publicly.
-
 ---
 
 ## Contents
@@ -251,12 +249,6 @@ Client side:
 - Execution sandbox / runner per selected language.
 - Theming + user profiles.
 - Persistent (non-TTL) rooms with explicit deletion.
-
----
-
-## License
-
-Specify a license (e.g. MIT) in this section.
 
 ---
 
